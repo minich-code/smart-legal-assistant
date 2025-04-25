@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling", "setuptools>=64", "wheel"]
+build-backend = "hatchling.build"
+
+[project]
+name = "smart_legal_assistant"
+version = "0.1.0"
+description = "A virtual legal assistant to help users navigate the Companies Act in Kenya using NLP, Pinecone, and semantic search."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    { name = "Western", email = "minichworks@gmail.com" }
+
+]
+keywords = [
+    "legal assistant", "Kenya Companies Act", "chatbot", "RAG",
+    "NLP", "Pinecone", "LangChain", "PDF parsing", "PyMuPDF"
+]
+
+dependencies = [
+    "PyMuPDF",
+    "PyYAML",
+    "huggingface_hub",
+    "ipykernel",
+    "langchain",
+    "langchain-huggingface",
+    "langchain-together",
+    "langchain_community",
+    "langchain_pinecone",
+    "numpy",
+    "openai",
+    "pinecone-client",
+    "pydantic",
+    "pydantic-settings",
+    "python-box",
+    "python-dotenv",
+    "python-json-logger",
+    "sentence-transformers",
+    "streamlit",
+    "tiktoken",
+    "together"
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "flake8",
+    "pytest",
+    "black",
+    "mypy",
+]
+
+[project.scripts]
+legal_assistant = "legal_assistant.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+plugins = [
+    "pydantic.mypy",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.flake8]
+max-line-length = 88
+exclude = ["__pycache__", "build", "dist"]
