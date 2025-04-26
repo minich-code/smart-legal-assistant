@@ -1,110 +1,94 @@
 
 
-## Reranking module that uses Cohere API
 
-import os 
-import cohere 
-from typing import List, Dict, Any, Optional, Union
-
+import os
+from together import Together
+from typing import List, Dict, Any, Optional
+from dotenv import load_dotenv
+load_dotenv()
 
 class Reranker:
-    """ Base class for reranking implementations"""
+    """Base class for reranking implementations."""
 
     def rerank(self, query: str, documents: List[Dict[str, Any]], top_n: Optional[int]) -> List[Dict[str, Any]]:
-        """Rerank the top_n documents based on the query.
-        
-        Args:
-            query (str): The query to rerank.
-            documents (List[Dict[str, Any]]): The list of documents to rerank.
-            top_n (Optional[int]): The number of top documents to return.
-
-        Return:
-            List[Dict[str, Any]]: The list of reranked documents.
-        """
-        
-
+        """Rerank the top_n documents based on the query."""
         raise NotImplementedError("Subclasses must implement the rerank method.")
 
-class CohereReranker(Reranker):
-    """ Implement using cohere reranker """
 
-    def __init__(self, api_key: Optional[str] = None, model: str = "rerank-multilingual-v2.0"):
-        """ Initialize Cohere Reranker 
-        
+class TogetherAIReranker(Reranker):
+    """Reranker implementation using Together AI's Llama-Rank model."""
+
+    def __init__(self, api_key: Optional[str] = None, model: str = "Salesforce/Llama-Rank-V1"):
+        """Initialize Together AI Reranker.
+
         Args:
-            api_key: Cohere API key 
-            model: Cohere reranking model to use 
+            api_key: Together AI API key
+            model: Together AI reranking model to use
         """
-
-        self.api_key = api_key or os.getenv("COHERE_API_KEY")
+        self.api_key = api_key or os.getenv("TOGETHER_AI_API_KEY")  # <-- Fixed here
         if not self.api_key:
-            raise ValueError("Please provide a Cohere API key or set the COHERE_API_KEY environment variable.")
-        
-        self.model = model
-        self.model = cohere.Client(self.api_key)
+            raise ValueError("Please provide a Together AI API key or set the TOGETHER_AI_API_KEY environment variable.")
 
+        self.client = Together(api_key=self.api_key)
+        self.model = model
 
     def rerank(self, query: str, documents: List[Dict[str, Any]], top_n: Optional[int]) -> List[Dict[str, Any]]:
-        """ Rerank documents using Cohere reranker model 
-        
-        Args:
-            query (str): The query to rerank.
-            documents (List[Dict[str, Any]]): The list of documents to rerank.
-            top_n (Optional[int]): The number of top documents to return.
-
-        Return:
-            List[Dict[str, Any]]: The list of reranked documents.
-        
-        """
-
+        """Rerank documents using Together AI's reranker model."""
         if not documents:
             return []
-        
-        # Extract documents texts 
-        doc_texts = [doc.get["text", ""] for doc in documents]
 
-        # Call the cohere rerank model 
-        results = self.Client.rerank(
-            model=self.model,
-            query=query,
-            documents=doc_texts,
-            top_n=top_n or len(documents))
+        # Extract document texts
+        doc_texts = [doc.get("text", "") for doc in documents]
 
-        # Rerank the documents based on rank results
+        try:
+            response = self.client.rerank.create(
+                model=self.model,
+                query=query,
+                documents=doc_texts,
+                top_n=top_n or len(doc_texts)
+            )
+        except Exception as e:
+            print(f"Error while calling Together AI API: {e}")
+            return []
+
+        # Reorder documents based on reranking results
         reranked_docs = []
-
-        for results in results.results:
-            # Get original document and add rerank score 
-
-            original_doc = documents[results.index]
-            original_doc["rerank_score"] = results.relevance_score
+        for result in response.results:
+            original_doc = documents[result.index]
+            original_doc["rerank_score"] = result.relevance_score
             reranked_docs.append(original_doc)
 
         return reranked_docs
-    
-# Factory function to get the right reranker 
-def get_reranker(reranker_type: str = "cohere", **kwargs) -> Reranker:
-    """ Get a reranker instance based on the provided reranker type.
-    
-    Args:
-    reranker_type (str): Types of reranker to use ie. (cohere)
-    **kwargs : Additional keyword arguments to pass to the reranker constructor.
-    
-    Returns:
-    reranker: An instance of the reranker.
-    
-    """
-    if reranker_type == "cohere":
-        return CohereReranker(**kwargs)
-    
+
+
+def get_reranker(reranker_type: str = "together_ai", **kwargs) -> Reranker:
+    """Factory to get a reranker instance."""
+    if reranker_type == "together_ai":
+        return TogetherAIReranker(**kwargs)
     else:
         raise ValueError(f"Unknown reranker type: {reranker_type}")
 
 
+# --- TEST SECTION (Together AI style example) ---
 
+if __name__ == "__main__":
+    reranker = get_reranker()
 
-        
-       
-    
+    query = "What animals can I find near Peru?"
+    documents = [
+        {
+            "text": "The giant panda (Ailuropoda melanoleuca), also known as the panda bear or simply panda, is a bear species endemic to China."},
+        {
+            "text": "The llama is a domesticated South American camelid, widely used as a meat and pack animal by Andean cultures since the pre-Columbian era."},
+        {
+            "text": "The wild Bactrian camel (Camelus ferus) is an endangered species of camel endemic to Northwest China and southwestern Mongolia."},
+        {
+            "text": "The guanaco is a camelid native to South America, closely related to the llama. Guanacos are one of two wild South American camelids; the other species is the vicuña, which lives at higher elevations."},
+    ]
 
-    
+    reranked_docs = reranker.rerank(query=query, documents=documents, top_n=2)
+
+    for doc in reranked_docs:
+        print(f"Document: {doc['text']}")
+        print(f"Rerank Score: {doc['rerank_score']}")
+        print("---")
