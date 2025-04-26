@@ -83,6 +83,10 @@ def get_vector_store(store_type: str = "pinecone", **kwargs) -> VectorStore:
         
     Returns:
         A vector store instance
+
+    N/B: 
+        You can add more vector stores here
+        Or swap pinecone with another vector store
     """
     if store_type == "pinecone":
         return PineconeStore(**kwargs)

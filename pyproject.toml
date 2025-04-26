@@ -3,14 +3,13 @@ requires = ["hatchling", "setuptools>=64", "wheel"]
 build-backend = "hatchling.build"
 
 [project]
-name = "smart_legal_assistant"
+name = "SmartLegalAssistant"  # <-- The distribution name (good as it is!)
 version = "0.1.0"
 description = "A virtual legal assistant to help users navigate the Companies Act in Kenya using NLP, Pinecone, and semantic search."
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
     { name = "Western", email = "minichworks@gmail.com" }
-
 ]
 keywords = [
     "legal assistant", "Kenya Companies Act", "chatbot", "RAG",
@@ -27,6 +26,8 @@ dependencies = [
     "langchain-together",
     "langchain_community",
     "langchain_pinecone",
+    "hatch",
+    "cohere",
     "numpy",
     "openai",
     "pinecone-client",
@@ -41,7 +42,6 @@ dependencies = [
     "together"
 ]
 
-
 [project.optional-dependencies]
 dev = [
     "flake8",
@@ -51,16 +51,17 @@ dev = [
 ]
 
 [project.scripts]
-legal_assistant = "legal_assistant.main:main"
+legal_assistant = "SmartLegalAssistant.main:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+packages = ["src/SmartLegalAssistant"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["SmartLegalAssistant*"]
 
 [tool.mypy]
 plugins = [

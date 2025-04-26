@@ -11,7 +11,7 @@ class Reranker:
     """ Base class for reranking implementations"""
 
     def rerank(self, query: str, documents: List[Dict[str, Any]], top_n: Optional[int]) -> List[Dict[str, Any]]:
-        """Rerank the documents based on the query.
+        """Rerank the top_n documents based on the query.
         
         Args:
             query (str): The query to rerank.
@@ -21,6 +21,7 @@ class Reranker:
         Return:
             List[Dict[str, Any]]: The list of reranked documents.
         """
+        
 
         raise NotImplementedError("Subclasses must implement the rerank method.")
 
