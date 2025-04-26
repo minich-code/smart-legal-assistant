@@ -66,8 +66,6 @@ class Retriever:
         else:
             query_embedding = self.embedding_model.embed_query(query)
 
-
-
         # Query the vector store 
         search_results = self.vector_store.query(vector = query_embedding, top_k=top_k, include_metadata=True)
 
@@ -109,7 +107,7 @@ class Retriever:
             return retrieved_chunks, sources
         
 
-def _expand_query(self, query: str) -> str:
+def expand_query(self, query: str) -> str:
         """Expand the query using the LLM.
         
         Args:

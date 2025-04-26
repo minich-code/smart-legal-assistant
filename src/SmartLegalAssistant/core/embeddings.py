@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 from abc import ABC, abstractmethod
 import together 
 
-class EmbeddingsModel(ABC):
+class EmbeddingModel(ABC):
     """A base class for embedding models."""
 
     @abstractmethod 
@@ -27,7 +27,7 @@ class EmbeddingsModel(ABC):
         pass 
 
 
-class TogetherAIEmbeddings(EmbeddingsModel):
+class TogetherAIEmbeddings(EmbeddingModel):
     """Embeddings model for text vectorization using TogetherAI."""
 
     def __init__(self, model_name: str = "BAAI/bge-large-en-v1.5", api_key:str = None):   
@@ -67,29 +67,24 @@ class TogetherAIEmbeddings(EmbeddingsModel):
 
 
 
-# Factory function to get the proper embedding model 
-class EmbeddingFactory:
-    """ A factory class for embedding models."""
+# Factory function to get the right embedding model
+def get_embedding_model(model_type: str = "together", **kwargs) -> EmbeddingModel: # Change together to another embedding option you have 
+    """Factory function to create embedding models.
+    
+    Args:
+        model_type: Type of model to use ('together', etc.)
+        **kwargs: Additional configuration for the model
+    
+    Returns:
+        An embedding model instance
 
-    @staticmethod
-    def get_embedding_model(model_type: str = "together", **kwargs) -> EmbeddingsModel:
-        """Get the embedding model based on the model type.
-
-        Args:
-            model_type (str): The type of embedding model to use. Defaults to "together".
-            **kwargs: Additional keyword arguments to pass to the embedding model constructor.
-        Returns:
-            EmbeddingsModel: An instance of the embedding model.
-        """
-        if model_type == "together":
-            return TogetherAIEmbeddings(**kwargs)
-        
-        else:
-            raise ValueError(f"Unknown embedding model type: {model_type}")
-        
-        
-
-        
-        
+    N/B: 
+        You can add more embedding models here
+        Or swap together with another embedding model
+    """
+    if model_type == "together":
+        return TogetherAIEmbeddings(**kwargs)
+    else:
+        raise ValueError(f"Unsupported embedding model type: {model_type}")
         
         

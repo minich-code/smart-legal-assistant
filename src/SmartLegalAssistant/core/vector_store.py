@@ -18,7 +18,7 @@ class VectorStore(ABC):
 
         pass 
 
-class PineconeDBStore(VectorStore):
+class PineconeStore(VectorStore):
     """Pinecone vector store for storing and retrieving documents."""
 
     def __init__(self, index_name: str, namespace: str = "", api_key: str = None, environment: str = None):
@@ -73,28 +73,18 @@ class PineconeDBStore(VectorStore):
 
         return self.index.query(**query_params)
 
-class vectorstorefactory:
-    """Factory class for vector stores."""
-    @staticmethod
-    def get_vector_store(store_type: str = "pinecone", **kwargs) -> VectorStore:
-        """Get a vector store instance based on the provided index name.
-        
-        Args:
-        store_type (str): Types of vector store to use ie. (Pinecone, FAISS, DataStax, Weaviate)
-        index_name (str): Name of the index
-        **kwargs : Additional keyword arguments to pass to the vector store constructor.
-        
-        Returns:
-        vectorstore: An instance of the vector store.
-        
-        """
-
-        if store_type == "pinecone":
-            return PineconeDBStore(**kwargs)
-
-        else:
-            raise ValueError(f"Unknown vector store type: {store_type}")
-        
+# Factory function to get the right vector store
+def get_vector_store(store_type: str = "pinecone", **kwargs) -> VectorStore:
+    """Factory function to create vector stores.
     
+    Args:
+        store_type: Type of vector store to use ('pinecone', etc.)
+        **kwargs: Additional configuration for the vector store
         
-
+    Returns:
+        A vector store instance
+    """
+    if store_type == "pinecone":
+        return PineconeStore(**kwargs)
+    else:
+        raise ValueError(f"Unsupported vector store type: {store_type}")
