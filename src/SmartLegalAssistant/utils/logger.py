@@ -26,7 +26,7 @@ class RAGLogger:
             log_dir: Directory to store logs
             log_level: Logging level
         """
-        self.logger = logging.getLogger("rag-app")
+        self.logger = logging.getLogger("rag-streamlit_app")
         self.logger.setLevel(log_level)
         
         # Create log directory if it doesn't exist

@@ -1,0 +1,62 @@
+
+
+/*!*!* Custom styling for the Streamlit app *!*!*/
+
+/*!*!* Legal citation highlighting *!*!*/
+/*!*.legal-citation {*!*/
+/*!*    background-color: #f0f7ff;*!*/
+/*!*    color: #0066cc;*!*/
+/*!*    font-weight: bold;*!*/
+/*!*    padding: 2px 4px;*!*/
+/*!*    border-radius: 3px;*!*/
+/*!*    border-bottom: 1px solid #0066cc;*!*/
+/*!*}*!*/
+
+/*!*!* Better spacing and layout *!*!*/
+/*!*.main .block-container {*!*/
+/*!*    padding-top: 2rem;*!*/
+/*!*    padding-bottom: 2rem;*!*/
+/*!*}*!*/
+
+/*!*!* Styling for answers *!*!*/
+/*!*.stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {*!*/
+/*!*    margin-top: 1.5rem;*!*/
+/*!*    margin-bottom: 1rem;*!*/
+/*!*}*!*/
+
+/*!*!* Improve readability *!*!*/
+/*!*p {*!*/
+/*!*    line-height: 1.6;*!*/
+/*!*}*!*/
+
+/*!*!* Make the follow-up section stand out *!*!*/
+/*!*.stSubheader {*!*/
+/*!*    margin-top: 2rem;*!*/
+/*!*    color: #555;*!*/
+/*!*}*!*/
+
+
+/*!* Main app styling *!*/
+/*.main {*/
+/*    padding: 1rem;*/
+/*}*/
+
+/*!* Legal citation highlighting *!*/
+/*.legal-citation {*/
+/*    background-color: #f0f7ff;*/
+/*    color: #0066cc;*/
+/*    font-weight: bold;*/
+/*    padding: 2px 4px;*/
+/*    border-radius: 3px;*/
+/*    border-bottom: 1px solid #0066cc;*/
+/*}*/
+
+/*!* Answer styling *!*/
+/*.stMarkdown {*/
+/*    line-height: 1.6;*/
+/*}*/
+
+/*!* Make the sidebar scrollable if needed *!*/
+/*.css-1d391kg {*/
+/*    overflow: auto;*/
+/*}*/

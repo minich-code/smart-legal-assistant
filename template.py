@@ -48,7 +48,7 @@ list_of_files = [
 
     # UI (optional frontend)
     f"src/{package_name}/ui/__init__.py",
-    f"src/{package_name}/ui/app.py",
+    f"src/{package_name}/ui/streamlit_app.py",
 
     # Common modules
     f"src/{package_name}/exception.py",
@@ -56,7 +56,7 @@ list_of_files = [
 
     # Project files
     "experiment.ipynb",
-    "main.py",
+    "streamlit_app.py",
     "streamlit_app.py",
     "requirements.txt",
     "pyproject.toml",

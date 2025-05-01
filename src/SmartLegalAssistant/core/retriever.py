@@ -1,5 +1,5 @@
 
-# RAG Retrieval implementation with Cohere Rerank (with Filtering)
+# RAG Retrieval implementation (with Filtering)
 
 from typing import List, Dict, Any, Optional, Tuple
 import re
@@ -19,7 +19,7 @@ class Retriever:
         vector_store: VectorStore,
         reranker: Optional[Reranker] = None,
         llm: Optional[LanguageModel] = None,
-        min_score_threshold: float = 0.40  # 👈 added filtering threshold
+        min_score_threshold: float = 0.5 # 👈 added filtering threshold
     ):
         self.embedding_model = embedding_model
         self.vector_store = vector_store
@@ -30,7 +30,7 @@ class Retriever:
     def retrieve(
         self,
         query: str,
-        top_k: int = 25,
+        top_k: int = 30,
         use_query_expansion: bool = False,
         rerank_results: bool = True,  # 👈 rerank always defaulted to True
     ) -> Tuple[List[str], List[Dict[str, Any]]]:
@@ -123,11 +123,11 @@ if __name__ == "__main__":
         vector_store=vector_store,
         llm=llm,
         reranker=reranker,
-        min_score_threshold=0.40  # 👈 Set your filtering here
+        min_score_threshold=0.50  # 👈 Set your filtering here
     )
 
     query = "director duties in a company"
-    retrieved_chunks, sources = retriever.retrieve(query, top_k=5, use_query_expansion=True)
+    retrieved_chunks, sources = retriever.retrieve(query, top_k=10, use_query_expansion=True)
 
     print(f"Retrieved {len(retrieved_chunks)} chunks after filtering and reranking.")
     for i, src in enumerate(sources, 1):

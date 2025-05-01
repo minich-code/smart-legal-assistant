@@ -1,7 +1,6 @@
 
 
 # Embeddings model for text vectorization
-
 import os
 from typing import List
 from abc import ABC, abstractmethod
@@ -102,7 +101,6 @@ def get_embedding_model(model_type: str = "together", **kwargs) -> EmbeddingMode
         return TogetherAIEmbeddings(**kwargs)
     else:
         raise ValueError(f"Unsupported embedding model type: {model_type}")
-
 
 
 # -------------------------------------------------------------------------

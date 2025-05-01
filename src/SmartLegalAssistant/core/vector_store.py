@@ -1,4 +1,6 @@
 
+
+# Vector store
 import os
 from typing import List, Dict, Any, Optional
 from abc import ABC, abstractmethod
@@ -16,7 +18,7 @@ class VectorStore(ABC):
     """Abstract base class for vector stores."""
 
     @abstractmethod
-    def query(self, vector: List[float], top_k: int = 25, **kwargs) -> Dict[str, Any]:
+    def query(self, vector: List[float], top_k: int = 30, **kwargs) -> Dict[str, Any]:
         """Query the vector store for similar documents."""
         pass
 
@@ -74,7 +76,7 @@ class PineconeStore(VectorStore):
                 log_immediately=True,
             )
 
-    def query(self, vector: List[float], top_k: int = 25, include_metadata: bool = True,
+    def query(self, vector: List[float], top_k: int = 30, include_metadata: bool = True,
               filter: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Query the vector store for similar documents.
