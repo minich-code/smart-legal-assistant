@@ -1,24 +1,22 @@
-
 services:
   - type: web
     name: rag-assistant
     runtime: python
     plan: starter
-
-    buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run streamlit_app/streamlit_app.py --server.port=$PORT --server.address=0.0.0.0
+    rootDir: src  # Set working directory to src/
+    buildCommand: pip install -r ../requirements.txt  # requirements.txt is in project_root/
+    startCommand: streamlit run SmartLegalAssistant/streamlit_app/app.py --server.port=$PORT --server.address=0.0.0.0
     healthCheckPath: /
-
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
-      
-      # API keys and environment variables (set manually in the Render dashboard)
-      - key: TOGETHER_API_KEY
+      - key: TOGETHER_AI_API_KEY  # Match embeddings.py
         sync: false
       - key: PINECONE_API_KEY
         sync: false
       - key: PINECONE_ENVIRONMENT
         sync: false
       - key: PINECONE_INDEX_NAME
+        sync: false
+      - key: PINECONE_NAMESPACE  # Add if used in app.py
         sync: false
