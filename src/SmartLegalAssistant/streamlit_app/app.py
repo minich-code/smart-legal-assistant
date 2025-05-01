@@ -2,7 +2,15 @@
 
 import streamlit as st
 import os
+import sys
 from dotenv import load_dotenv
+
+# Add src/ to sys.path (parent of SmartLegalAssistant/)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+# Debug prints
+print("Python path:", sys.path)
+print("Current directory:", os.getcwd())
+print("Files in current dir:", os.listdir('.'))
 
 # Import components from your project
 from SmartLegalAssistant.core.embeddings import get_embedding_model
