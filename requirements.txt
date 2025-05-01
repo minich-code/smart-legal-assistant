@@ -18,6 +18,6 @@ python-box
 python-dotenv
 python-json-logger
 sentence-transformers
-streamlit
+streamlit==1.45.0
 tiktoken
 together
